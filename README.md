@@ -6,9 +6,9 @@ Este repositório contém os arquivos de configuração, firmwares e documentaç
 O sistema foca na coleta local de dados meteorológicos, processa essas informações e as transmite via rádio frequência utilizando a tecnologia LoRa, operando de forma remota e autônoma dentro do campus da universidade.
 
 ## Grandezas Monitoradas
-O protótipo base foi projetado para medir inicialmente:
-*   **Temperatura**
-*   **Umidade**
+O protótipo base foi projetado para medir inicialmente [Sugestões]:
+*   **Temperatura** (DHT11 - já temos esse no PETEE) 
+*   **Umidade** (DHT11 - já temos esse no PETEE)
 *   **Velocidade do Vento (Anemometria)** (https://www.usinainfo.com.br/estacao-meteorologica-arduino/anemometro-para-estacao-meteorologica-e-arduino-sv10-3686.html - Anemômetro que já temos no PETEE) 
 *   *(Expansível para novos sensores)*
 
