@@ -9,7 +9,8 @@ O sistema foca na coleta local de dados meteorológicos, processa essas informa�
 O protótipo base foi projetado para medir inicialmente [Sugestões]:
 *   **Temperatura** (DHT11 - já temos esse no PETEE) 
 *   **Umidade** (DHT11 - já temos esse no PETEE)
-*   **Velocidade do Vento (Anemometria)** (https://www.usinainfo.com.br/estacao-meteorologica-arduino/anemometro-para-estacao-meteorologica-e-arduino-sv10-3686.html - Anemômetro que já temos no PETEE) 
+*   **Velocidade do Vento (Anemometria)** (https://www.usinainfo.com.br/estacao-meteorologica-arduino/anemometro-para-estacao-meteorologica-e-arduino-sv10-3686.html - Anemômetro que já temos no PETEE)
+*   -> Vídeo refere^ncia de uso do anemômetro: https://www.youtube.com/watch?v=AgZYoUZm8_4
 *   *(Expansível para novos sensores)*
 
 ## Especificações Técnicas (V1)
