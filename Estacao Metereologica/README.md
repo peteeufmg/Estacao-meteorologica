@@ -1,10 +1,8 @@
 ## 🌦️ Estação Metereológica IoT com ESP32
----
 
 Estação metereológica baseada no microcontrolador ESP32 para monitoramente de temperaturda, umidade e velocidade dos ventos.
 
 ## 🧰 Tecnologias utilizadas
----
 
 - **DHT11**: Sensor utilizado para fazer a leitura simultaneamente da temperatura e da Humidade do ar.
 
@@ -15,7 +13,6 @@ Estação metereológica baseada no microcontrolador ESP32 para monitoramente de
 - **Transmissão/Recepção**: 
 
 ## 🤔 Por que o ESP32?
---- 
 
 O ESP32 foi escolhido como microntroladro principal do projeto por uma combinação de fatores que o tornam uma ótima escolha para a aplicação, sendo essas combinações um **alto desempenho**, **conectividade Wi-Fi integrada** e **baixo consumo energético**.
 
