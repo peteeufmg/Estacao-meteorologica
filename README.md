@@ -20,3 +20,6 @@ O ESP32 foi escolhido como microntroladro principal do projeto por uma combinaç
 
 Diferente de opções como o Arduino Uno, o ESP32 já oferece conectividade nativa, o que elimina a necessidade de modulos adicionais e também um modo chamado sleep mode, que permite operações com bateria por longos períodos - por ter um consumo de energia baixo nesse modo.
 
+## 📌 Referências de projetos existentes
+
+**Estação meteorológica completa** - (https://repositorio.ufsm.br/bitstream/handle/1/33266/DIS_PPGMETEOROLOGIA_2024_SOUZA_EBERTON.pdf?sequence=1&isAllowed=y)
