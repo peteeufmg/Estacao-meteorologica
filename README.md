@@ -1,37 +1,20 @@
-# Protótipo de Análise Climática 🌤️
+## 🌦️ Estação Metereológica IoT com ESP32
 
-## Sobre o Projeto
-Este repositório contém os arquivos de configuração, firmwares e documentação técnica de um protótipo de monitoramento climático desenvolvido pelo **Programa de Educação Tutorial da Engenharia Elétrica (PETEE) da UFMG**. 
+Estação metereológica baseada no microcontrolador ESP32 para monitoramente de temperaturda, umidade e velocidade dos ventos.
 
-O sistema foca na coleta local de dados meteorológicos, processa essas informações e as transmite via rádio frequência utilizando a tecnologia LoRa, operando de forma remota e autônoma dentro do campus da universidade.
+## 🧰 Tecnologias utilizadas
 
-## Grandezas Monitoradas
-O protótipo base foi projetado para medir inicialmente [Sugestões]:
-*   **Temperatura** (DHT11 - já temos esse no PETEE) 
-*   **Umidade** (DHT11 - já temos esse no PETEE)
-*   **Velocidade do Vento (Anemometria)** (https://www.usinainfo.com.br/estacao-meteorologica-arduino/anemometro-para-estacao-meteorologica-e-arduino-sv10-3686.html - Anemômetro que já temos no PETEE)
-*   -> Vídeo referência de uso do anemômetro: https://www.youtube.com/watch?v=AgZYoUZm8_4
-*   *(Expansível para novos sensores)*
+- **DHT11**: Sensor utilizado para fazer a leitura simultaneamente da temperatura e da Humidade do ar.
 
-## Especificações Técnicas (V1)
-*   **Comunicação:** Tecnologia LoRa (Long Range) para transmissão de pacotes de dados.
-*   **Hardware Base (Opções):** Microcontrolador padrão associado a um transceiver LoRa dedicado OU placa integrada (ex: Heltec Meshtastic LoRa32 V3).
-*   **Processamento:** Tratamento de dados no microcontrolador da borda e definição de janelas de tempo específicas para otimização da transmissão e economia de energia.
+- **Anemômetro**: Sensor utilziado para medir a velocidade dos ventos.
 
-## Posicionamento Estratégico e Parcerias
-Para garantir a validade científica e a utilidade dos dados coletados, a instalação física dos módulos de sensoriamento no **campus da UFMG** será pautada por estudos de relevo e microclima. 
+- **ESP32**: Microntrolador selecionado para processar os dados dos sensores e realizar a transmissão dos dados lidos.
 
-Espera-se a colaboração e validação interdisciplinar com estudantes e pesquisadores de áreas como:
-*   Engenharia Ambiental
-*   Geologia
-*   Geografia
+- **Transmissão/Recepção**: 
 
-## Estrutura do Repositório
-*   `/firmware`: Códigos-fonte para o microcontrolador/placa Heltec.
-*   `/hardware`: Esquemáticos e possíveis arquivos de PCB.
-*   `/docs`: Documentação adicional, datasheets e especificações de pinagem.
+## 🤔 Por que o ESP32?
 
----
-**Orientador do Projeto:** Isabela Vogt e Gabriel Lyan
-**Petianos responsáveis:** Samara Aquino e Gustavo Henrique
-**Instituição:** PETEE - Universidade Federal de Minas Gerais (UFMG)
+O ESP32 foi escolhido como microntroladro principal do projeto por uma combinação de fatores que o tornam uma ótima escolha para a aplicação, sendo essas combinações um **alto desempenho**, **conectividade Wi-Fi integrada** e **baixo consumo energético**.
+
+Diferente de opções como o Arduino Uno, o ESP32 já oferece conectividade nativa, o que elimina a necessidade de modulos adicionais e também um modo chamado sleep mode, que permite operações com bateria por longos períodos - por ter um consumo de energia baixo nesse modo.
+
