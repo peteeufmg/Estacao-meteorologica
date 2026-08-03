@@ -1,0 +1,60 @@
+.stat-tile {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+
+.stat-tile__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--tile-color) 14%, transparent);
+  color: var(--tile-color);
+}
+
+.stat-tile__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.stat-tile__body {
+  min-width: 0;
+}
+
+.stat-tile__label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.stat-tile__value {
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.stat-tile__value--number {
+  font-size: 34px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.stat-tile__value--text {
+  font-size: 21px;
+}
+
+.stat-tile__unit {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
