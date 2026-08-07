@@ -3,7 +3,7 @@
 ## Sobre o Projeto
 Este repositório contém os arquivos de configuração, firmwares e documentação técnica de um protótipo de monitoramento climático desenvolvido pelo **Programa de Educação Tutorial da Engenharia Elétrica (PETEE) da UFMG**. 
 
-O sistema foca na coleta local de dados meteorológicos, processa essas informações e as transmite via rádio frequência utilizando a tecnologia LoRa, operando de forma remota e autônoma dentro do campus da universidade.
+O sistema foca na coleta local de dados meteorológicos, processa essas informações e as transmite via conexão HTTP utilizando a camada de internet (Wi-Fi), enviando requisições do ESP32 para uma página/servidor web desenvolvido especificamente para receber e armazenar os dados, operando de forma remota e autônoma dentro do campus da universidade.
 
 ## Grandezas Monitoradas
 O protótipo base foi projetado para medir inicialmente [Sugestões]:
@@ -14,8 +14,8 @@ O protótipo base foi projetado para medir inicialmente [Sugestões]:
 *   *(Expansível para novos sensores)*
 
 ## Especificações Técnicas (V1)
-*   **Comunicação:** Tecnologia LoRa (Long Range) para transmissão de pacotes de dados.
-*   **Hardware Base (Opções):** Microcontrolador padrão associado a um transceiver LoRa dedicado OU placa integrada (ex: Heltec Meshtastic LoRa32 V3).
+*   **Comunicação:** Conexão HTTP via Wi-Fi (camada de internet). O ESP32 realiza requisições HTTP para uma página/servidor web próprio, responsável por receber e armazenar os dados coletados.
+*   **Hardware Base:** Microcontrolador ESP32, com conectividade Wi-Fi nativa.
 *   **Processamento:** Tratamento de dados no microcontrolador da borda e definição de janelas de tempo específicas para otimização da transmissão e economia de energia.
 
 ## Posicionamento Estratégico e Parcerias
@@ -27,8 +27,9 @@ Espera-se a colaboração e validação interdisciplinar com estudantes e pesqui
 *   Geografia
 
 ## Estrutura do Repositório
-*   `/firmware`: Códigos-fonte para o microcontrolador/placa Heltec.
+*   `/firmware`: Códigos-fonte para o microcontrolador ESP32.
 *   `/hardware`: Esquemáticos e possíveis arquivos de PCB.
+*   `/web`: Página/servidor web que recebe as requisições HTTP do ESP32 com os dados coletados.
 *   `/docs`: Documentação adicional, datasheets e especificações de pinagem.
 
 ---

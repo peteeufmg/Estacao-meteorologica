@@ -10,7 +10,7 @@ Estação metereológica baseada no microcontrolador ESP32 para monitoramente de
 
 - **ESP32**: Microntrolador selecionado para processar os dados dos sensores e realizar a transmissão dos dados lidos.
 
-- **Transmissão/Recepção**: 
+- **Transmissão/Recepção**: Conexão HTTP via Wi-Fi. O ESP32 envia requisições para uma página/servidor web próprio, que recebe e armazena os dados coletados pelos sensores.
 
 ## 🤔 Por que o ESP32?
 
