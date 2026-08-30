@@ -20,7 +20,7 @@ function App() {
     fetchWeatherReading().then(setReading)
   }, [])
 
-  const condition = reading ? SKY_CONDITIONS[reading.condition] : null
+  const condition = reading?.condition ? SKY_CONDITIONS[reading.condition] : null
 
   return (
     <div className="page">
@@ -34,7 +34,7 @@ function App() {
 
       <main className="page__main">
         <div className="page__status">
-          <span className="page__status-badge">Dados de exemplo</span>
+          <span className="page__status-badge">Dados da estação</span>
           <span>Última leitura: {formatUpdatedAt(reading?.updatedAt)}</span>
         </div>
 
@@ -42,21 +42,21 @@ function App() {
           <StatTile
             icon={<DropletIcon />}
             label="Umidade do ar"
-            value={reading ? reading.humidity : '--'}
+            value={reading?.humidity ?? '--'}
             unit="%"
             color="var(--series-humidity)"
           />
           <StatTile
             icon={<ThermometerIcon />}
             label="Temperatura"
-            value={reading ? reading.temperature : '--'}
+            value={reading?.temperature ?? '--'}
             unit="°C"
             color="var(--series-temperature)"
           />
           <StatTile
             icon={<WindIcon />}
             label="Velocidade do vento"
-            value={reading ? reading.windSpeed : '--'}
+            value={reading?.windSpeed ?? '--'}
             unit="km/h"
             color="var(--series-wind)"
           />
