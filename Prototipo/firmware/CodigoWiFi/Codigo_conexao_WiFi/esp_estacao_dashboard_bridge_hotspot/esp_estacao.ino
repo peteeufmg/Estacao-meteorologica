@@ -22,7 +22,7 @@
 
 // Troque pelo IP da máquina onde o dashboard/bridge estiver rodando.
 // Exemplo: "192.168.1.20"
-const char* DASHBOARD_HOST = "172.20.10.2";
+const char* DASHBOARD_HOST = "192.168.1.11";
 const uint16_t DASHBOARD_PORT = 3001;
 const char* DASHBOARD_PATH = "/api/weather";
 const unsigned long PUBLISH_INTERVAL_MS = 10000;
