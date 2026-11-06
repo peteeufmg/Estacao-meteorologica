@@ -40,6 +40,7 @@
   font-size: 14px;
   color: var(--text-muted);
   margin-bottom: 24px;
+  flex-wrap: wrap;
 }
 
 .page__status-badge {
@@ -52,6 +53,46 @@
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 4px 10px;
+}
+
+.page__refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(35, 197, 94, 0.12);
+  border: 1px solid rgba(35, 197, 94, 0.28);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.page__refresh.is-refreshing {
+  background: rgba(250, 204, 21, 0.12);
+  border-color: rgba(250, 204, 21, 0.35);
+  color: #b7791f;
+}
+
+.page__refresh.is-refreshing::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d97706;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
 }
 
 .stat-grid {

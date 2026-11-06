@@ -21,11 +21,12 @@
 #define CONNECT_TIMEOUT_S  20
 
 // Troque pelo IP da máquina onde o dashboard/bridge estiver rodando.
-// Exemplo: "192.168.1.20"
-const char* DASHBOARD_HOST = " 172.20.10.5";
+// Exemplo: "192.168.1.20". O valor deve ser o IP da máquina que está rodando `server.cjs`.
+// Sem espaços extras antes ou depois do IP.
+const char* DASHBOARD_HOST = "172.20.10.2";
 const uint16_t DASHBOARD_PORT = 3001;
 const char* DASHBOARD_PATH = "/api/weather";
-const unsigned long PUBLISH_INTERVAL_MS = 10000;
+const unsigned long PUBLISH_INTERVAL_MS = 5UL * 60UL * 1000UL;
 
 // ======================
 // Sensores
@@ -159,6 +160,8 @@ String buildReadingPayload() {
 // ======================
 bool publishReadingToDashboard() {
   String payload = buildReadingPayload();
+  Serial.printf("[Dashboard] Tentando enviar para http://%s:%d%s\n",
+                DASHBOARD_HOST, DASHBOARD_PORT, DASHBOARD_PATH);
   Serial.println("[Dashboard] Enviando payload: " + payload);
 
   HTTPClient http;

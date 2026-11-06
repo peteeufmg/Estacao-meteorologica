@@ -15,9 +15,30 @@ function formatUpdatedAt(isoString) {
 
 function App() {
   const [reading, setReading] = useState(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
-    fetchWeatherReading().then(setReading)
+    let isMounted = true
+
+    const loadReading = async () => {
+      setIsRefreshing(true)
+      const nextReading = await fetchWeatherReading()
+      if (isMounted) {
+        setReading(nextReading)
+      }
+      if (isMounted) {
+        setIsRefreshing(false)
+      }
+    }
+
+    loadReading()
+
+    const intervalId = setInterval(loadReading, 5000)
+
+    return () => {
+      isMounted = false
+      clearInterval(intervalId)
+    }
   }, [])
 
   const condition = reading?.condition ? SKY_CONDITIONS[reading.condition] : null
@@ -35,6 +56,9 @@ function App() {
       <main className="page__main">
         <div className="page__status">
           <span className="page__status-badge">Dados da estação</span>
+          <span className={`page__refresh ${isRefreshing ? 'is-refreshing' : ''}`}>
+            {isRefreshing ? 'Atualizando...' : 'Sincronizado'}
+          </span>
           <span>Última leitura: {formatUpdatedAt(reading?.updatedAt)}</span>
         </div>
 
