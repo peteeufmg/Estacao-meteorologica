@@ -4,21 +4,19 @@ export async function fetchWeatherReading() {
     if (!response.ok) throw new Error('Falha ao buscar leitura')
     const data = await response.json()
 
+    if (data.updatedAt == null && data.temperature == null && data.humidity == null && data.windSpeed == null) {
+      return null
+    }
+
     return {
       temperature: data.temperature ?? null,
       humidity: data.humidity ?? null,
       windSpeed: data.windSpeed ?? null,
       condition: data.condition ?? null,
-      updatedAt: new Date().toISOString(),
+      updatedAt: data.updatedAt ?? null,
     }
   } catch (error) {
     console.warn('Não foi possível buscar a leitura do bridge:', error)
-    return {
-      temperature: null,
-      humidity: null,
-      windSpeed: null,
-      condition: null,
-      updatedAt: new Date().toISOString(),
-    }
+    throw error
   }
 }

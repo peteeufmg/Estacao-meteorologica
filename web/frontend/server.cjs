@@ -27,7 +27,10 @@ const server = http.createServer((req, res) => {
     });
     req.on('end', () => {
       try {
-        latestReading = JSON.parse(body);
+        latestReading = {
+          ...JSON.parse(body),
+          updatedAt: new Date().toISOString(),
+        };
         console.log('Leitura recebida do ESP:', latestReading);
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ ok: true }));

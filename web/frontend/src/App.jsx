@@ -5,35 +5,47 @@ import { fetchWeatherReading } from './data/weatherSource'
 import { SKY_CONDITIONS } from './data/skyConditions'
 import './App.css'
 
+const REFRESH_INTERVAL_MS = 5 * 60 * 1000
+
 function formatUpdatedAt(isoString) {
   if (!isoString) return '—'
-  return new Date(isoString).toLocaleTimeString('pt-BR', {
+  return new Date(isoString).toLocaleString('pt-BR', {
     hour: '2-digit',
     minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
   })
 }
 
 function App() {
   const [reading, setReading] = useState(null)
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [syncStatus, setSyncStatus] = useState('loading')
 
   useEffect(() => {
     let isMounted = true
 
     const loadReading = async () => {
-      setIsRefreshing(true)
-      const nextReading = await fetchWeatherReading()
-      if (isMounted) {
-        setReading(nextReading)
-      }
-      if (isMounted) {
-        setIsRefreshing(false)
+      setSyncStatus('refreshing')
+      try {
+        const nextReading = await fetchWeatherReading()
+        if (isMounted) {
+          if (nextReading) {
+            setReading(nextReading)
+            setSyncStatus('synced')
+          } else {
+            setSyncStatus('waiting')
+          }
+        }
+      } catch {
+        if (isMounted) {
+          setSyncStatus('error')
+        }
       }
     }
 
     loadReading()
 
-    const intervalId = setInterval(loadReading, 5000)
+    const intervalId = setInterval(loadReading, REFRESH_INTERVAL_MS)
 
     return () => {
       isMounted = false
@@ -42,6 +54,13 @@ function App() {
   }, [])
 
   const condition = reading?.condition ? SKY_CONDITIONS[reading.condition] : null
+  const statusLabels = {
+    loading: 'Buscando leitura...',
+    refreshing: 'Atualizando...',
+    synced: 'Dados recebidos',
+    waiting: 'Aguardando dados do ESP',
+    error: 'Falha ao consultar servidor',
+  }
 
   return (
     <div className="page">
@@ -56,8 +75,8 @@ function App() {
       <main className="page__main">
         <div className="page__status">
           <span className="page__status-badge">Dados da estação</span>
-          <span className={`page__refresh ${isRefreshing ? 'is-refreshing' : ''}`}>
-            {isRefreshing ? 'Atualizando...' : 'Sincronizado'}
+          <span className={`page__refresh is-${syncStatus}`} role="status" aria-live="polite">
+            {statusLabels[syncStatus]}
           </span>
           <span>Última leitura: {formatUpdatedAt(reading?.updatedAt)}</span>
         </div>
