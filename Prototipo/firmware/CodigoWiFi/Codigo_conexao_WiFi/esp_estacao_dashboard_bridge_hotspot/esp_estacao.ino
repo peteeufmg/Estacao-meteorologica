@@ -37,10 +37,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 #define ANEMOMETRO_PIN 2
 volatile unsigned long contadorPulsos = 0;
-unsigned long ultimoTempoDHT = 0;
-const unsigned long intervaloDHT = 2000;
 unsigned long ultimoTempoAnemometro = 0;
-const unsigned long intervaloAnemometro = 1000;
 
 float temperaturaC = NAN;
 int umidadePercent = -1;
@@ -51,36 +48,35 @@ void IRAM_ATTR contaPulso() {
 }
 
 void atualizarLeiturasSensores() {
-  unsigned long agora = millis();
+  float umidade = dht.readHumidity();
+  float temperatura = dht.readTemperature();
 
-  if (agora - ultimoTempoDHT >= intervaloDHT) {
-    ultimoTempoDHT = agora;
-
-    float umidade = dht.readHumidity();
-    float temperatura = dht.readTemperature();
-
-    if (!isnan(umidade) && !isnan(temperatura)) {
-      umidadePercent = (int)round(umidade);
-      temperaturaC = temperatura;
-    } else {
-      Serial.println("[Sensores] Falha ao ler o sensor DHT11.");
-    }
+  if (!isnan(umidade) && !isnan(temperatura)) {
+    umidadePercent = (int)round(umidade);
+    temperaturaC = temperatura;
+  } else {
+    umidadePercent = -1;
+    temperaturaC = NAN;
+    Serial.println("[Sensores] Falha ao ler o sensor DHT11.");
   }
 
-  if (agora - ultimoTempoAnemometro >= intervaloAnemometro) {
-    ultimoTempoAnemometro = agora;
+  noInterrupts();
+  unsigned long pulsos = contadorPulsos;
+  contadorPulsos = 0;
+  interrupts();
 
-    noInterrupts();
-    unsigned long pulsos = contadorPulsos;
-    contadorPulsos = 0;
-    interrupts();
+  unsigned long agora = millis();
+  unsigned long intervaloDecorridoMs = agora - ultimoTempoAnemometro;
+  ultimoTempoAnemometro = agora;
 
-    float segundosDecorridos = intervaloAnemometro / 1000.0;
+  if (intervaloDecorridoMs > 0) {
+    float segundosDecorridos = intervaloDecorridoMs / 1000.0;
     float pulsosPorSegundo = pulsos / segundosDecorridos;
     velocidadeVentoKmh = pulsosPorSegundo * 2.4;
-
-    Serial.printf("[Sensores] Vento: %.1f km/h\n", velocidadeVentoKmh);
   }
+
+  Serial.printf("[Sensores] Vento médio no intervalo: %.1f km/h (%lu pulsos em %lu ms)\n",
+                velocidadeVentoKmh, pulsos, intervaloDecorridoMs);
 }
 
 // ======================
@@ -102,23 +98,18 @@ unsigned long lastPublishMs = 0;
 // Leitura dos sensores
 // ======================
 float readTemperatureC() {
-  atualizarLeiturasSensores();
   return temperaturaC;
 }
 
 int readHumidityPercent() {
-  atualizarLeiturasSensores();
   return umidadePercent;
 }
 
 float readWindSpeedKmh() {
-  atualizarLeiturasSensores();
   return velocidadeVentoKmh;
 }
 
 String readSkyCondition() {
-  atualizarLeiturasSensores();
-
   if (isnan(temperaturaC) || umidadePercent < 0) {
     return "indefinido";
   }
@@ -139,6 +130,8 @@ String readSkyCondition() {
 }
 
 String buildReadingPayload() {
+  atualizarLeiturasSensores();
+
   String payload = "{";
   float temperature = readTemperatureC();
   int humidity = readHumidityPercent();
@@ -315,6 +308,7 @@ void setup() {
   dht.begin();
   pinMode(ANEMOMETRO_PIN, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(ANEMOMETRO_PIN), contaPulso, FALLING);
+  ultimoTempoAnemometro = millis();
 
   prefs.begin("wifi", true);
   wifiSSID = prefs.getString("ssid",  "");
