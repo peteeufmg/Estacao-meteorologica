@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import StatTile from './components/StatTile'
 import { ThermometerIcon, DropletIcon, WindIcon, CloudIcon, SunCloudIcon } from './components/icons'
-import { fetchWeatherReading } from './data/weatherSource'
+import { fetchWeatherReading, subscribeWeatherReadings } from './data/weatherSource'
 import { SKY_CONDITIONS } from './data/skyConditions'
 import './App.css'
-
-const REFRESH_INTERVAL_MS = 5 * 60 * 1000
 
 function formatUpdatedAt(isoString) {
   if (!isoString) return '—'
@@ -24,42 +22,43 @@ function App() {
   useEffect(() => {
     let isMounted = true
 
-    const loadReading = async () => {
-      setSyncStatus('refreshing')
-      try {
-        const nextReading = await fetchWeatherReading()
-        if (isMounted) {
-          if (nextReading) {
-            setReading(nextReading)
-            setSyncStatus('synced')
-          } else {
-            setSyncStatus('waiting')
-          }
-        }
-      } catch {
-        if (isMounted) {
-          setSyncStatus('error')
-        }
+    const applyReading = (nextReading) => {
+      if (!isMounted) return
+
+      if (nextReading) {
+        setReading(nextReading)
+        setSyncStatus('synced')
+      } else {
+        setSyncStatus('waiting')
       }
     }
 
-    loadReading()
+    fetchWeatherReading()
+      .then(applyReading)
+      .catch(() => {
+        if (isMounted) setSyncStatus('error')
+      })
 
-    const intervalId = setInterval(loadReading, REFRESH_INTERVAL_MS)
+    const unsubscribe = subscribeWeatherReadings(
+      applyReading,
+      () => {
+        if (isMounted) setSyncStatus('error')
+      },
+    )
 
     return () => {
       isMounted = false
-      clearInterval(intervalId)
+      unsubscribe()
     }
   }, [])
 
   const condition = reading?.condition ? SKY_CONDITIONS[reading.condition] : null
   const statusLabels = {
-    loading: 'Buscando leitura...',
+    loading: 'Conectando ao servidor...',
     refreshing: 'Atualizando...',
-    synced: 'Dados recebidos',
+    synced: 'Recebendo dados em tempo real',
     waiting: 'Aguardando dados do ESP',
-    error: 'Falha ao consultar servidor',
+    error: 'Conexão perdida; tentando reconectar...',
   }
 
   return (

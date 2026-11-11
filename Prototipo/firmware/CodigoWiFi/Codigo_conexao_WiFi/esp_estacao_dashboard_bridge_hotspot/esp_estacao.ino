@@ -26,7 +26,7 @@
 const char* DASHBOARD_HOST = "172.20.10.2";
 const uint16_t DASHBOARD_PORT = 3001;
 const char* DASHBOARD_PATH = "/api/weather";
-const unsigned long PUBLISH_INTERVAL_MS = 5UL * 60UL * 1000UL;
+const unsigned long PUBLISH_INTERVAL_MS = 2000UL;
 
 // ======================
 // Sensores
@@ -246,9 +246,13 @@ bool connectWiFi() {
 
   if (wifiMode == "enterprise") {
     Serial.println("[WiFi] Modo WPA2 Enterprise.");
+    String eapIdentity = wifiIdentity.isEmpty() ? wifiUsername : wifiIdentity;
+    if (wifiIdentity.isEmpty()) {
+      Serial.println("[WiFi] Identidade anônima não definida; usando o usuário institucional como identidade EAP.");
+    }
 #if ESP32_EAP_API_MODERN
     esp_eap_client_set_identity(
-      (uint8_t*)wifiIdentity.c_str(), wifiIdentity.length());
+      (uint8_t*)eapIdentity.c_str(), eapIdentity.length());
     esp_eap_client_set_username(
       (uint8_t*)wifiUsername.c_str(), wifiUsername.length());
     esp_eap_client_set_password(
@@ -256,7 +260,7 @@ bool connectWiFi() {
     esp_wifi_sta_enterprise_enable();
 #else
     esp_wifi_sta_wpa2_ent_set_identity(
-      (uint8_t*)wifiIdentity.c_str(), wifiIdentity.length());
+      (uint8_t*)eapIdentity.c_str(), eapIdentity.length());
     esp_wifi_sta_wpa2_ent_set_username(
       (uint8_t*)wifiUsername.c_str(), wifiUsername.length());
     esp_wifi_sta_wpa2_ent_set_password(
